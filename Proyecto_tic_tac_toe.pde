@@ -7,6 +7,8 @@ private PFont fuente;
 private boolean primerJugador = true;
 private boolean segundoJugador = false;
 
+private boolean victoria = false;
+
 private int puntajePrimerJugador = 0;
 private int puntajeSegundoJugador = 0;
 
@@ -100,15 +102,21 @@ void mousePressed() {
     fondoReinicio = #DCDCDC;
   }
 
-  do {
+  if (jugando) {
     if (numeroTurno < 9) {
-      funcionBotones();
-      println("El turno es: " + numeroTurno);
-      jugando = false;
+      if (victoria == false) {
+        funcionBotones();
+        println("El turno es: " + numeroTurno);
+        if (victoria == true) {
+          sumarMarcador(jugadorActual);
+        }
+      } else {
+        jugando = false;
+      }
     } else {
       println(Arrays.deepToString(casillas));
     }
-  } while (jugando);
+  }
 }
 
 void tablero(int x, int y, int x2, int y2) {
@@ -154,21 +162,18 @@ private PImage imagenJugadorActual(boolean primerJugador, boolean segundoJugador
 private boolean comprobarVictoria(int jugador) {
   boolean horizontales = false;
   boolean verticales = false;
-  println("Es el jugador: " + jugador);
+
   for (int i=0; i < 9; i+=3) {
-    println("EL valor de i: " + i);
     if (casillas[2][i] == jugador && casillas[2][i+1] == jugador 
       && casillas[2][i+2] == jugador) {
-      println("Victoria!");
       horizontales = true;
       return true;
     }
   }
+
   for (int i=0; i < 3; i+=1) {
-    println("EL valor de i: " + i);
     if (casillas[2][i] == jugador && casillas[2][i+3] == jugador 
       && casillas[2][i+6] == jugador) {
-      
       verticales = true;
       return true;
     }
@@ -177,15 +182,12 @@ private boolean comprobarVictoria(int jugador) {
   if (!horizontales && !verticales) {
     if (casillas[2][0] == jugador && casillas[2][4] == jugador 
       && casillas[2][8] == jugador) {
-      println("Victoria!");
       return true;
     } else if (casillas[2][2] == jugador && casillas[2][4] == jugador 
       && casillas[2][6] == jugador) {
-      println("Victoria!");
       return true;
     }
   }
-  println("Nada");
   return false;
 }
 
@@ -197,7 +199,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 10, 60, 60);
       asignarCasilla(1, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -208,7 +210,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 15, y + 10, 60, 60);
       asignarCasilla(2, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -219,7 +221,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 105, y + 10, 60, 60);
       asignarCasilla(3, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -230,7 +232,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 100, 60, 60);
       asignarCasilla(4, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -241,7 +243,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 15, y + 100, 60, 60);
       asignarCasilla(5, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -252,7 +254,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 105, y + 100, 60, 60);
       asignarCasilla(6, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -263,7 +265,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 190, 60, 60);
       asignarCasilla(7, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -274,7 +276,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 15, y + 190, 60, 60);
       asignarCasilla(8, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 
@@ -285,7 +287,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 105, y + 190, 60, 60);
       asignarCasilla(9, 1, jugadorActual);
-      comprobarVictoria(jugadorActual);
+      victoria = comprobarVictoria(jugadorActual);
     }
   }
 }
@@ -301,4 +303,12 @@ public boolean casillaOcupada(int cuadro) {
     return true;
   }
   return false;
+}
+
+public void sumarMarcador(int jugador) {
+  if (jugador == 1) {
+    puntajePrimerJugador++;
+  } else {
+    puntajeSegundoJugador++;
+  }
 }
