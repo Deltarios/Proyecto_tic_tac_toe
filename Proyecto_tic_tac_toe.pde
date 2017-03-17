@@ -1,7 +1,9 @@
 import java.util.Arrays;
 
 private final String textoReinicio = "Reiniciar Partida";
-private final String textoJugador = "Turno Jugador: ";
+private String textoJugador = "Turno Jugador: ";
+private String textoVictoria = "Ha ganado el jugador: ";
+
 private PFont fuente;
 
 private boolean primerJugador = true;
@@ -23,10 +25,14 @@ private int[][] casillas = new int[3][9];
 private PImage simboloX;
 private PImage simboloO;
 
+private PImage imagenTurno;
+
 private PImage imagenJugadorActual;
 
 private color fondo;
 private color fondoReinicio;
+
+private int coordenadaFija = 340;
 
 private int x = 250;
 private int y = 220;
@@ -67,7 +73,7 @@ void draw() {
   fill(0);
   textFont(fuente);
   textSize(30);
-  text(String.valueOf(puntajePrimerJugador), 280, 77);
+  text(String.valueOf(puntajePrimerJugador), 275, 77);
 
   fill(255, 255, 255);
   rect(310, 50, 150, 40, 7);
@@ -77,7 +83,7 @@ void draw() {
   fill(0);
   textFont(fuente);
   textSize(30);
-  text(String.valueOf(puntajeSegundoJugador), 440, 77);
+  text(String.valueOf(puntajeSegundoJugador), 435, 77);
 
   fondoReinicio = fondo;
 
@@ -87,8 +93,10 @@ void draw() {
   text(textoJugador, 220, 125);
 
   if (imagenJugadorActual != null) {
-    PImage imagenTurno = imagenJugadorActual(primerJugador, segundoJugador);
-    image(imagenTurno, 340, 110, 20, 20);
+    if (victoria == false) {
+      imagenTurno = imagenJugadorActual(primerJugador, segundoJugador);
+    }
+    image(imagenTurno, coordenadaFija, 110, 20, 20);
   }
 
   fill(0, 189, 173);
@@ -108,6 +116,7 @@ void mousePressed() {
         funcionBotones();
         println("El turno es: " + numeroTurno);
         if (victoria == true) {
+          efectosVictoria(jugadorActual, victoria);
           sumarMarcador(jugadorActual);
         }
       } else {
@@ -119,7 +128,7 @@ void mousePressed() {
   }
 }
 
-void tablero(int x, int y, int x2, int y2) {
+void tablero(final int x, final int y, final int x2, final int y2) {
   strokeCap(SQUARE);
   stroke(0, 161, 147);
   line(x, y, x2, y2);
@@ -149,7 +158,7 @@ private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) 
   this.segundoJugador = segundoJugador;
 }
 
-private PImage imagenJugadorActual(boolean primerJugador, boolean segundoJugador) {
+private PImage imagenJugadorActual(final boolean primerJugador, final boolean segundoJugador) {
   PImage imagenTurno;
   if (primerJugador == false && segundoJugador == true) {
     imagenTurno = loadImage("o.png");
@@ -159,7 +168,7 @@ private PImage imagenJugadorActual(boolean primerJugador, boolean segundoJugador
   return imagenTurno;
 }
 
-private boolean comprobarVictoria(int jugador) {
+private boolean comprobarVictoria(final int jugador) {
   boolean horizontales = false;
   boolean verticales = false;
 
@@ -292,23 +301,39 @@ private void funcionBotones() {
   }
 }
 
-public void asignarCasilla(int cuadro, int ocupado, int jugadorActual) {
+public void asignarCasilla(final int cuadro, final int ocupado, final int jugadorActual) {
   casillas[0][cuadro - 1] = cuadro;
   casillas[1][cuadro - 1] = ocupado;
   casillas[2][cuadro - 1] = jugadorActual;
 }
 
-public boolean casillaOcupada(int cuadro) {
+public boolean casillaOcupada(final int cuadro) {
   if (casillas[1][cuadro - 1] == 1) {
     return true;
   }
   return false;
 }
 
-public void sumarMarcador(int jugador) {
+public void sumarMarcador(final int jugador) {
   if (jugador == 1) {
     puntajePrimerJugador++;
   } else {
     puntajeSegundoJugador++;
   }
+}
+
+private void efectosVictoria(final int jugador, final boolean victoria) {
+  if (victoria == true) {
+    coordenadaFija += 55;
+    textoJugador = textoVictoria;
+    if (jugador == 1) {
+      imagenTurno = loadImage("x.png");
+    } else {
+      imagenTurno = loadImage("o.png");
+    }
+  }
+}
+
+private void botonReinicio() {
+
 }
