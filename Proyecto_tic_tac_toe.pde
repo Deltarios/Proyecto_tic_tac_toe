@@ -141,6 +141,7 @@ private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) 
   }
   this.primerJugador = primerJugador;
   this.segundoJugador = segundoJugador;
+  comprobarVictoria(jugadorActual);
   numeroTurno++;
 }
 
@@ -156,7 +157,6 @@ private PImage imagenJugadorActual(boolean primerJugador, boolean segundoJugador
 
 private boolean comprobarVictoria(int jugador) {
   boolean lineales = false;
-
   println("Es el jugador: " + jugador);
   for (int i=0; i < 9; i+=3) {
     println("EL valor de i: " + i);
@@ -247,14 +247,11 @@ private void funcionBotones() {
   // Cuadro 7
   if (mouseX >= x - 80  && mouseX <= x + 5 && mouseY >= y + 180 && mouseY < y2) {
     println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 7");
-    println("Jugador actual: " + jugadorActual);
     if (!casillaOcupada(7)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 190, 60, 60);
       asignarCasilla(7, 1, jugadorActual);
     }
-    println("Estado: " + !casillaOcupada(7));
-    println("Jugador actual: " + jugadorActual);
   }
 
   // Cuadro 8
