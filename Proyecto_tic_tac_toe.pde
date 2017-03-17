@@ -108,6 +108,7 @@ void draw() {
 void mousePressed() {
   if (mouseX > 0 && mouseY >= 550) {
     fondoReinicio = #DCDCDC;
+    accionReinicio();
   }
 
   if (jugando) {
@@ -122,8 +123,6 @@ void mousePressed() {
       } else {
         jugando = false;
       }
-    } else {
-      println(Arrays.deepToString(casillas));
     }
   }
 }
@@ -263,7 +262,6 @@ private void funcionBotones() {
 
   // Cuadro 7
   if (mouseX >= x - 80  && mouseX <= x + 5 && mouseY >= y + 180 && mouseY < y2) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 7");
     if (!casillaOcupada(7)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 190, 60, 60);
@@ -274,7 +272,6 @@ private void funcionBotones() {
 
   // Cuadro 8
   if (mouseX >= x + 5  && mouseX <= x + 85 && mouseY >= y + 180 && mouseY < y2) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 5");
     if (!casillaOcupada(8)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 15, y + 190, 60, 60);
@@ -285,7 +282,6 @@ private void funcionBotones() {
 
   // Cuadro 9
   if (mouseX >= x + 90  && mouseX <= x + 175 && mouseY >= y + 180 && mouseY < y2) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 9");
     if (!casillaOcupada(9)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 105, y + 190, 60, 60);
@@ -328,6 +324,10 @@ private void efectosVictoria(final int jugador, final boolean victoria) {
   }
 }
 
-private void botonReinicio() {
-
+private void accionReinicio() {
+  casillas = new int[3][9];
+  numeroTurno = 0;
+  jugadorActual = 1;
+  jugando = true;
+  println(Arrays.deepToString(casillas));
 }
