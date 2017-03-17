@@ -139,10 +139,6 @@ private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) 
     segundoJugador = false;
     jugadorActual = 2;
   }
-
-  if (comprobarVictoria(jugadorActual)) {
-    println("Victoria: " + jugadorActual);
-  }
   this.primerJugador = primerJugador;
   this.segundoJugador = segundoJugador;
   numeroTurno++;
@@ -159,20 +155,30 @@ private PImage imagenJugadorActual(boolean primerJugador, boolean segundoJugador
 }
 
 private boolean comprobarVictoria(int jugador) {
+  boolean lineales = false;
+
   println("Es el jugador: " + jugador);
   for (int i=0; i < 9; i+=3) {
     println("EL valor de i: " + i);
     if (casillas[2][i] == jugador && casillas[2][i+1] == jugador 
       && casillas[2][i+2] == jugador) {
-      return true;
-    } else if (casillas[2][0] == jugador && casillas[2][4] == jugador 
-      && casillas[2][8] == jugador) {
-      return true;
-    } else if (casillas[2][2] == jugador && casillas[2][4] == jugador 
-      && casillas[2][6] == jugador) {
+      println("Victoria!");
+      lineales = true;
       return true;
     }
   }
+  if (!lineales) {
+    if (casillas[2][0] == jugador && casillas[2][4] == jugador 
+      && casillas[2][8] == jugador) {
+      println("Victoria!");
+      return true;
+    } else if (casillas[2][2] == jugador && casillas[2][4] == jugador 
+      && casillas[2][6] == jugador) {
+      println("Victoria!");
+      return true;
+    }
+  }
+  println("Nada");
   return false;
 }
 
@@ -184,6 +190,7 @@ private void funcionBotones() {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 10, 60, 60);
       asignarCasilla(1, 1, jugadorActual);
+      comprobarVictoria(jugadorActual);
     }
   }
 
