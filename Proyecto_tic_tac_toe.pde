@@ -203,7 +203,6 @@ private boolean comprobarVictoria(final int jugador) {
 private void funcionBotones() {
   //Cuadro 1
   if (mouseX > x - 80 && mouseX <= x - 5 && mouseY >= y && mouseY < y2 - 180) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 1");
     if (!casillaOcupada(1)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 10, 60, 60);
@@ -214,7 +213,6 @@ private void funcionBotones() {
 
   // Cuadro 2
   if (mouseX >= x + 10  && mouseX <= x + 85 && mouseY >= y && mouseY < y2 - 180) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 2");
     if (!casillaOcupada(2)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 15, y + 10, 60, 60);
@@ -225,7 +223,6 @@ private void funcionBotones() {
 
   // Cuadro 3
   if (mouseX >= x + 90  && mouseX <= x + 175 && mouseY >= y && mouseY < y2 - 180) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 3");
     if (!casillaOcupada(3)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 105, y + 10, 60, 60);
@@ -236,7 +233,6 @@ private void funcionBotones() {
 
   // Cuadro 4
   if (mouseX >= x - 80  && mouseX <= x - 5 && mouseY >= y + 90 && mouseY < y2 - 90) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 4");
     if (!casillaOcupada(4)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x - 75, y + 100, 60, 60);
@@ -247,7 +243,6 @@ private void funcionBotones() {
 
   // Cuadro 5
   if (mouseX >= x + 5  && mouseX <= x + 85 && mouseY >= y + 90 && mouseY < y2 - 85) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 5");
     if (!casillaOcupada(5)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 15, y + 100, 60, 60);
@@ -258,7 +253,6 @@ private void funcionBotones() {
 
   // Cuadro 6
   if (mouseX >= x + 90  && mouseX <= x + 175 && mouseY >= y + 90 && mouseY < y2 - 85) {
-    println("Las coordenadas: X: " + mouseX + " Y: " + mouseY + " Cuadro 6");
     if (!casillaOcupada(6)) {
       estadoJugadorActual(primerJugador, segundoJugador);
       image(imagenJugadorActual, x + 105, y + 100, 60, 60);
