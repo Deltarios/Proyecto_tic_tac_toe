@@ -18,9 +18,9 @@ Programas:
 
 <table>
 <tr>
-<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/Captura%20de%20pantalla%202017-03-17%20a%20la(s)%2022.18.54.png></td>
-<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/Captura%20de%20pantalla%202017-03-17%20a%20la(s)%2022.19.22.png></td>
-<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/Captura%20de%20pantalla%202017-03-17%20a%20la(s)%2022.19.52.png></td>
+<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen1.png></td>
+<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen2.png></td>
+<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen3.png></td>
 </tr>
 </table>
 
