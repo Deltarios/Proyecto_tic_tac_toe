@@ -142,6 +142,9 @@ void draw() {
   // Acepta los valores constantes que definimos en la cabecera del programa.
   tablero(X_FIJA, Y_FIJA, X2_FIJA, Y2_FIJA);
 
+  // Definimos el nuevo color del fondo del boton de reinicio
+  fondoReinicio = fondo;
+
   // Estas lineas de codigo dibujan lo que sera el cuadro blanco superior del juego donde posteriormente se dibujaran los marcadores 
   noStroke();
   fill(fondo);
@@ -163,6 +166,7 @@ void draw() {
   // Este metdo es el encargado de poner la imagen de cruz en pantalla, lugar especifico en el marcador del juego 1
   image(simboloCruz, 155, 60, 20, 20);
 
+  // Definimos y creamos lo que sera el texto del marcador, aqui se actualizar el texto para que sea redibujado en la pantalla del juego
   fill(0);
   textFont(fuentePuntaje);
   textSize(22);
@@ -174,14 +178,15 @@ void draw() {
   rect(310, 50, 150, 40, 7);
   noFill();
 
+  // Este metdo es el encargado de poner la imagen de cruz en pantalla, lugar especifico en el marcador del juego 2
   image(simboloCirculo, 315, 60, 20, 20);
 
+  // Definimos y creamos lo que sera el texto del marcador, aqui se actualizar el texto para que sea redibujado en la pantalla del juego
   fill(0);
   textFont(fuentePuntaje);
   textSize(22);
   text(String.valueOf(puntajeSegundoJugador), 435, 77);
-
-  fondoReinicio = fondo;
+  // Finaliza el dibujado del marcador del jugador 1
 
   fill(0);
   textFont(fuente);
