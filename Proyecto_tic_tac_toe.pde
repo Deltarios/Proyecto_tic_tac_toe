@@ -345,9 +345,20 @@ private void efectosVictoria(final int jugador, final boolean victoria) {
 }
 
 private void accionReinicio() {
+  clear();
+  background(0, 189, 173);
   casillas = new int[3][9];
   numeroTurno = 0;
   jugadorActual = 1;
   jugando = true;
+  primerJugador = true;
+  segundoJugador = false;
+  victoria = false;
+
+  coordenadaFijaImagen = 340;
+  coordenadaFijaTexto = 220;
+  
+  textoJugador = "Turno Jugador: ";
+
   println(Arrays.deepToString(casillas));
 }
