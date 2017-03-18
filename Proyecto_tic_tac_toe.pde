@@ -42,6 +42,8 @@ private int x2 = 250;
 private int y2 = 480;
 
 private SoundFile clickBoton;
+private SoundFile sonidoEmpate;
+private SoundFile sonidoVictoria;
 
 void setup() {   
 
@@ -56,6 +58,8 @@ void setup() {
   fondoReinicio = #F8F8F8;
 
   clickBoton = new SoundFile(this, "sonidoClick.mp3");
+  sonidoEmpate = new SoundFile(this, "sonidoEmpate.mp3");
+  sonidoVictoria = new SoundFile(this, "sonidoVictoria.mp3");
 }
 
 void draw() {
@@ -102,9 +106,9 @@ void draw() {
     if (victoria == false) {
       imagenTurno = imagenJugadorActual(primerJugador, segundoJugador);
     }
-    
-    if(numeroTurno != 9 || victoria == true) {
-    image(imagenTurno, coordenadaFijaImagen, 110, 20, 20);
+
+    if (numeroTurno != 9 || victoria == true) {
+      image(imagenTurno, coordenadaFijaImagen, 110, 20, 20);
     }
   }
 
@@ -116,6 +120,7 @@ void draw() {
 
 void mousePressed() {
   clickBoton.play();
+
   if (mouseX > 0 && mouseY >= 550) {
     fondoReinicio = #DCDCDC;
     accionReinicio();
@@ -131,6 +136,7 @@ void mousePressed() {
           sumarMarcador(jugadorActual);
         } else if (numeroTurno == 9) {
           coordenadaFijaTexto += 50;
+          sonidoEmpate.play();
           textoJugador = "¡Empate!";
         }
       } else {
@@ -329,6 +335,7 @@ private void efectosVictoria(final int jugador, final boolean victoria) {
   if (victoria == true) {
     coordenadaFijaImagen += 55;
     textoJugador = textoVictoria;
+    sonidoVictoria.play();
     if (jugador == 1) {
       imagenTurno = loadImage("x.png");
     } else {
