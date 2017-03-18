@@ -5,6 +5,7 @@ private String textoJugador = "Turno Jugador: ";
 private String textoVictoria = "Ha ganado el jugador: ";
 
 private PFont fuente;
+private PFont fuentePuntaje;
 
 private boolean primerJugador = true;
 private boolean segundoJugador = false;
@@ -22,8 +23,8 @@ private int numeroTurno = 0;
 
 private int[][] casillas = new int[3][9]; 
 
-private PImage simboloX;
-private PImage simboloO;
+private PImage simboloCruz;
+private PImage simboloCirculo;
 
 private PImage imagenTurno;
 
@@ -31,14 +32,16 @@ private PImage imagenJugadorActual;
 
 private color fondo;
 private color fondoReinicio;
+private color fondoBotonesCruz;
+private color fondoBotonesCirculo;
 
 private int coordenadaFijaImagen = 340;
 private int coordenadaFijaTexto = 220;
 
 private int x = 250;
 private int y = 220;
-private int x2 = 250;
-private int y2 = 480;
+private int x2 = x;
+private int y2 = y + 260;
 
 private SoundFile clickBoton;
 private SoundFile sonidoEmpate;
@@ -49,12 +52,15 @@ void setup() {
   size(600, 600);
   background(0, 189, 173);
 
-  simboloX = loadImage("x.png");
-  simboloO = loadImage("o.png");
+  simboloCruz = loadImage("x.png");
+  simboloCirculo = loadImage("o.png");
 
   fuente = loadFont("Beirut-20.vlw");
+  fuentePuntaje = loadFont("ArialRounded.vlw");
   fondo = #F8F8F8;
   fondoReinicio = #F8F8F8;
+  fondoBotonesCruz = #FFFFFF;
+  fondoBotonesCirculo = fondoBotonesCruz;
 
   clickBoton = new SoundFile(this, "sonidoClick.mp3");
   sonidoEmpate = new SoundFile(this, "sonidoEmpate.mp3");
@@ -73,25 +79,26 @@ void draw() {
   rect(0, 550, 600, 50);
   noFill();
 
-  fill(255, 255, 255);
+  fill(fondoBotonesCruz);
   rect(150, 50, 150, 40, 7);
   noFill();
 
-  image(simboloX, 155, 60, 20, 20);
+  image(simboloCruz, 155, 60, 20, 20);
 
   fill(0);
-  textFont(fuente);
-  textSize(30);
+  textFont(fuentePuntaje);
+  textSize(22);
   text(String.valueOf(puntajePrimerJugador), 275, 77);
 
-  fill(255, 255, 255);
+  fill(fondoBotonesCirculo);
   rect(310, 50, 150, 40, 7);
   noFill();
 
-  image(simboloO, 315, 60, 20, 20);
+  image(simboloCirculo, 315, 60, 20, 20);
+
   fill(0);
-  textFont(fuente);
-  textSize(30);
+  textFont(fuentePuntaje);
+  textSize(22);
   text(String.valueOf(puntajeSegundoJugador), 435, 77);
 
   fondoReinicio = fondo;
@@ -115,6 +122,8 @@ void draw() {
   textFont(fuente);
   text(textoReinicio, 215, 580);
   strokeWeight(10);
+
+  eleccionJugador();
 }
 
 void mousePressed() {
@@ -356,4 +365,34 @@ private void accionReinicio() {
   coordenadaFijaImagen = 340;
   coordenadaFijaTexto = 220;
   textoJugador = "Turno Jugador: ";
+}
+
+private void eleccionJugador() {
+  println("x = " + mouseX + " y = " + mouseY);
+  if (mouseX >= x - 100  && mouseX <= x + 50 && mouseY >= y - 170 && mouseY < y2 - 390) {
+    println("Entro");
+    if (numeroTurno == 0) {
+      fondoBotonesCruz = #DCDCDC;
+      if (mousePressed) {
+        jugadorActual = 1;
+        imagenJugadorActual = loadImage("x.png");
+        primerJugador = true;
+        segundoJugador = false;
+      }
+    }
+  } else if (mouseX >= x + 60  && mouseX <= x + 210 && mouseY >= y - 170 && mouseY < y2 - 390) {
+    println("Entro");
+    if (numeroTurno == 0) {
+      fondoBotonesCirculo = #DCDCDC;
+      if (mousePressed) {
+        jugadorActual = 2;
+        imagenJugadorActual = loadImage("o.png");
+        primerJugador = false;
+        segundoJugador = true;
+      }
+    }
+  } else {
+    fondoBotonesCruz = #FFFFFF;
+    fondoBotonesCirculo = #FFFFFF;
+  }
 }
