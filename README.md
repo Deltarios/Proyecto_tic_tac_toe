@@ -24,6 +24,8 @@ Programas:
 </tr>
 </table>
 
+### Versión: 1.0 
+
 ## Licencia
 
 El contenido de este repositorio esta bajo una licencia [Creative Commons Attribution NonCommercial License](https://creativecommons.org/licenses/by-nc/4.0/)
