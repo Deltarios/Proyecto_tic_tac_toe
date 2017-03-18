@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import processing.sound.*;
 
 private final String textoReinicio = "Reiniciar Partida";
@@ -354,11 +353,7 @@ private void accionReinicio() {
   primerJugador = true;
   segundoJugador = false;
   victoria = false;
-
   coordenadaFijaImagen = 340;
   coordenadaFijaTexto = 220;
-  
   textoJugador = "Turno Jugador: ";
-
-  println(Arrays.deepToString(casillas));
 }
