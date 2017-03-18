@@ -230,7 +230,7 @@ void draw() {
 /**
  * Esta es el metodo encargado de definir todo lo que es el tablero
  * con esta creamos cada una de las lineas que son utilizados para 
- * el tabler, para que posteriomente se dibuje.
+ * el tablero, para que posteriomente se dibuje.
  * @param x, y, x2, y2
  */
 void tablero(final int x, final int y, final int x2, final int y2) {
@@ -238,28 +238,40 @@ void tablero(final int x, final int y, final int x2, final int y2) {
   strokeCap(SQUARE);
   // Definimos el color de las lineas
   stroke(0, 161, 147);
-  
+
   // Creamos la primera linea y la segunda linea verticales del tablero, siendo la primera, nuestra referencia
-  line(x, y, x2, y2);
-  line(x + 90, y, x2 + 90, y2);
+  line(x, y, x2, y2); // 1 Linea, la x, y, x2 y y2 son sus coordenadas
+  line(x + 90, y, x2 + 90, y2); // 2 Linea
   // Finalizamos con dibujar la primera y segunda linea vertical
 
   // Creamos la primera linea y la segunda linea horizontales del tablero, estan usan de referencia a la primera linea
-  line(x - 85, y + 85, x2 + 175, y2 - 175);
-  line(x - 85, y + 175, x2 + 175, y2 - 85);
-  // Finalizamos con dibujar la primera y segunda linea vertical
+  line(x - 85, y + 85, x2 + 175, y2 - 175); // 3 Linea
+  line(x - 85, y + 175, x2 + 175, y2 - 85); // 4 Linea
+  // Finalizamos con dibujar la primera y segunda linea horizontal
 
   // Dejamos de pintar los bordes de las lineas
   noStroke();
 }
 
+/**
+ * Se encarga de asignarle a cada jugador su respectiva imagen, hace una comprobacion
+ * del estado de cada uno de los jugadores, para asi detectar de quien es el turno, pero sera el inverso, al turno
+ * @param primerJugador, segundoJugador
+ * @return imagenJugadorActual: devuelve la imagen actual del jugador
+ */
 public PImage imagenJugadorActual(final boolean primerJugador, final boolean segundoJugador) {
+  // Creamos una variable local donde se guardara, para loa imagen que enviaremos despues
   PImage imagenTurno;
+  // Comprobamos si es el turno del segundo jugador
   if (primerJugador == false && segundoJugador == true) {
+    // Si es el turno del segundo le asignamos la imagen de circulo
     imagenTurno = loadImage("o.png");
+    // Si no se cumple esta condicion entonces es el turno del primer jugador
   } else {
+    // pondremos la imagen del primer jugador que es la x
     imagenTurno = loadImage("x.png");
   }
+  // Devolvemos la imagen despues que es asignada en la condicional
   return imagenTurno;
 }
 
@@ -315,56 +327,6 @@ void mousePressed() {
       }
     }
   }
-}
-
-private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) {
-  if (primerJugador == true && segundoJugador == false) {
-    imagenJugadorActual = loadImage("x.png");
-    primerJugador = false;
-    segundoJugador = true;
-    jugadorActual = 1;
-    numeroTurno++;
-  } else {
-    imagenJugadorActual = loadImage("o.png");
-    primerJugador = true;
-    segundoJugador = false;
-    jugadorActual = 2;
-    numeroTurno++;
-  }
-  this.primerJugador = primerJugador;
-  this.segundoJugador = segundoJugador;
-}
-
-private boolean comprobarVictoria(final int jugador) {
-  boolean horizontales = false;
-  boolean verticales = false;
-
-  for (int i=0; i < 9; i+=3) {
-    if (casillas[2][i] == jugador && casillas[2][i+1] == jugador 
-      && casillas[2][i+2] == jugador) {
-      horizontales = true;
-      return true;
-    }
-  }
-
-  for (int i=0; i < 3; i+=1) {
-    if (casillas[2][i] == jugador && casillas[2][i+3] == jugador 
-      && casillas[2][i+6] == jugador) {
-      verticales = true;
-      return true;
-    }
-  }
-
-  if (!horizontales && !verticales) {
-    if (casillas[2][0] == jugador && casillas[2][4] == jugador 
-      && casillas[2][8] == jugador) {
-      return true;
-    } else if (casillas[2][2] == jugador && casillas[2][4] == jugador 
-      && casillas[2][6] == jugador) {
-      return true;
-    }
-  }
-  return false;
 }
 
 private void funcionBotones() {
@@ -459,12 +421,6 @@ private void funcionBotones() {
   }
 }
 
-public void asignarCasilla(final int cuadro, final int ocupado, final int jugadorActual) {
-  casillas[0][cuadro - 1] = cuadro;
-  casillas[1][cuadro - 1] = ocupado;
-  casillas[2][cuadro - 1] = jugadorActual;
-}
-
 public boolean casillaOcupada(final int cuadro) {
   if (casillas[1][cuadro - 1] == 1) {
     return true;
@@ -472,30 +428,116 @@ public boolean casillaOcupada(final int cuadro) {
   return false;
 }
 
-public void sumarMarcador(final int jugador) {
-  if (jugador == 1) {
-    puntajePrimerJugador++;
+private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) {
+  if (primerJugador == true && segundoJugador == false) {
+    imagenJugadorActual = loadImage("x.png");
+    primerJugador = false;
+    segundoJugador = true;
+    jugadorActual = 1;
+    numeroTurno++;
   } else {
-    puntajeSegundoJugador++;
+    imagenJugadorActual = loadImage("o.png");
+    primerJugador = true;
+    segundoJugador = false;
+    jugadorActual = 2;
+    numeroTurno++;
   }
+  this.primerJugador = primerJugador;
+  this.segundoJugador = segundoJugador;
 }
 
-private void efectosVictoria(final int jugador, final boolean victoria) {
-  if (victoria == true) {
-    coordenadaVariableImagen += 55;
-    textoDeJuego = textoVictoria;
-    sonidoVictoria.play();
-    if (jugador == 1) {
-      imagenTurno = loadImage("x.png");
-    } else {
-      imagenTurno = loadImage("o.png");
+/**
+ * Este metodo, es el encargado de rellenar a las casillas del tablero,
+ * este mismo recibe los valores, y los asigna a sus respectivos index,
+ * de esta manera sabremos el estado de cada uno de los 9 cuadros del juego
+ * @param int cuadro, int ocupado, int jugadorAcual 
+ * estos son los 3 respectivos valores que pueden tener los cuadros 
+ */
+public void asignarCasilla(final int cuadro, final int ocupado, final int jugadorActual) {
+  // Le asignamos el numero de cuadro [0 a 8], pero lo que recibimos le tenemos que restar 1 para no salir del index: por ejemplo si recibmos 1 le restamos 1 seria realmente
+  // la posicion 0 del arreglo
+  casillas[0][cuadro - 1] = cuadro;
+  // Le asignamos el estado de ocupado o desocupado, siendo 0 desocupado y 1 ocupado, los unicos valores posibles que puede tomar
+  casillas[1][cuadro - 1] = ocupado;
+  // Le asignamos que jugador esta en esa casilla, es una manera de saber quien esta en la casilla, marcando con 1 si es el jugador 1 y un 2 si es el jugador 2
+  casillas[2][cuadro - 1] = jugadorActual;
+}
+
+/**
+ * Teniendo en cuenta nuestra matriz 9x3 un ejemplo para ilustrar es: {[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]}
+ * Este metodo hace la comprobacion de la victoria, tomando como punto de referencia al jugador actual, revisa si este ha ganado al finalizar su turno
+ * verificamos de forma vertigal, horizotal, y diagonal cada uno de las posiciones, y si encuentra que el jugador al momento de terminar su turno
+ * si hay una combiacion en la matriz en index(posicion) [2][i] siendo 2 las posiciones de los jugadores y i el numero del cuadro que se revisa
+ * de [{1, 1, 1}] (Siendo el caso del jugador 1), si hay una combinacion asi al finalizar su turno significa que ha ganado, y devolvemos
+ * true, de lo contrario si el jugador aun no completa una linea de tres, devolvera false, dando entender que aun no ha ganado el jugador en ese turno
+ * @param int jugador
+ * jugador al que quieres comprobar si gano o no.
+ * @return boolean true or false 
+ * Devuelve true si gano y false si aun no gana
+ */
+private boolean comprobarVictoria(final int jugador) {
+  // Variable local de tipo booleano que nos servira para ver donde ya revisamos, en este caso los horizontales
+  boolean horizontales = false;
+  // Variable local de tipo booleano que nos servira para ver donde ya revisamos, en este caso los verticales
+  boolean verticales = false;
+
+  // En esta parte vamos a verificar si hay una combinacion de forma horizontal, se va escaner de 3 en 3, bajando, y si encontramos la combiacion en alguna de las
+  // casillas horizontales entonces hacemos dos revisiones, mandamos true en horizontales y true en victoria. Esto sirve para indenpendizar parte del codigo
+  for (int i=0; i < 9; i+=3) {
+    // Verificamos cada una de las casillas recorridas por el for viendo si hay combiacion de 3
+    if (casillas[2][i] == jugador && casillas[2][i+1] == jugador 
+      && casillas[2][i+2] == jugador) {
+      // Si encontramos combinacion horizontal, a nuestra variable local le cambiamos el valor, nos servira posteriormente en el codigo  
+      horizontales = true;
+      // Si encontramos combinacion horizontal de 3, entonces el jugador habra gando, y podemos salir del bucle for.
+      return true;
     }
   }
+  // En esta parte vamos a verificar si hay una combinacion de forma vertical, se va escaner de 3 en 3, yendo de lado, y si encontramos la combiacion en alguna de las
+  // casillas verticales entonces hacemos dos revisiones, mandamos true en verticales y true en victoria. Esto sirve para indenpendizar parte del codigo
+  for (int i=0; i < 3; i+=1) {
+    // Verificamos cada una de las casillas recorridas por el for viendo si hay combiacion de 3 o sea que el jugador se encuentre en las 1, que el valor en ese index(posición)
+    // sea el mismo para los tres
+    if (casillas[2][i] == jugador && casillas[2][i+3] == jugador 
+      && casillas[2][i+6] == jugador) {
+      // Si encontramos combinacion vertical, a nuestra variable local le cambiamos el valor, nos servira posteriormente en el codigo  
+      verticales = true;
+      // Si encontramos combinacion horizontal de 3, entonces el jugador habra gando, y podemos salir del bucle for.
+      return true;
+    }
+  }
+  // Ahora si no encontramos ninguna combinacion horizontal o vertical, entonces podra haber una de las dos combiaciones diagonales
+  // entonces con ayuda de nuestras variables locales, si estas siguen siendo falsas, procederemos a analizar si hay una combinacion diagonal en las
+  // casillas para esto sea posible, tenemos la condificion tiene que ser false && false, si alguna de las dos es true, entonces este codigo no se ejecuta
+  // tambien nos sirve ha agilizar las cosas, por que no tenemos que analizar una y otra vez la misma cosa.
+  if (!horizontales && !verticales) {
+    // Verificamos cada una de las casillas diagonal en este caso las casillas {0, 4, 8} -> [1, 5, 9] si estas tienen al mismo jugador entonces ese jugador a ganado
+    if (casillas[2][0] == jugador && casillas[2][4] == jugador 
+      && casillas[2][8] == jugador) {
+      // Devolvemos verdadero si hay una combinacion de 3 digonal o sea {[1,0,0], [0,1,0], [0, 0, 1]} siendo las matrices 1, 5, 9 
+      return true;
+      // De lo contrario verificamos cada una de las casillas diagonal en este caso las casillas {2, 4, 6} -> [3, 5, 7] si estas tienen al mismo jugador entonces ese jugador a ganado
+    } else if (casillas[2][2] == jugador && casillas[2][4] == jugador 
+      && casillas[2][6] == jugador) {
+      // Devolvemos verdadero si hay una combinacion de 3 digonal o sea {[0,0,1], [0,1,0], [1, 0, 0]} siendo las matrices 3, 5, 7 
+      return true;
+    }
+  }
+  // Si posteiormente todo se eso falla, entonces significa que aun no hay un ganador en la partida, y se devuelve un false, para pasar al siguiente turno
+  return false;
 }
 
+/**
+ * Esto se encargara de regresar a los valores originales a todo el juego exceptuando al marcador, para que asi, se pueda generar una nueva partida
+ * sin perder los datos de quien va ganando, y quien va perdiendo,
+ * basicamente, regresa a todos las variables que se enlistas a sus valores originales.
+ */
 private void accionReinicio() {
+  // Limpia la pantalla y despues se van ha redibujar (Recuerda que el void Draw se repite indefinidamente)
   clear();
+  // Se regresan los valores originales al iniciar el juego
   background(0, 189, 173);
+  // Esto crea una nueva matriz de 9x3 o sea {[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]} la nuevas matrices siempre se rellena por defecto con ceros
   casillas = new int[3][9];
   numeroTurno = 0;
   jugadorActual = 1;
@@ -506,4 +548,48 @@ private void accionReinicio() {
   coordenadaVariableImagen = 340;
   coordenadaVariableTexto = 220;
   textoDeJuego = "Turno Jugador: ";
+  // Se termina el listado de variables
+}
+
+/**
+ * Se encarga de realizar los efectos de victoria en pantalla, comprobando quien es el jugador y si es victorioso
+ * pone el nuevo texto de victoria, reproduce el sonido y pone la imagen del ganador
+ * @param int jugador, boolean victoria  
+ * "los parametros son finales por que el valor no cambiare en el metodo, ayuda a Java agilizar procesos"
+ */
+private void efectosVictoria(final int jugador, final boolean victoria) {
+  // Comprobamos si hay victoria, si no hay no hacemos nada
+  if (victoria == true) {
+    // Cambiamos la coordenada de la imagen para que se ajuste al texto, la declarion es igual a: coordenadaVariableImagen =  coordenadaVariableImagen + 55;
+    coordenadaVariableImagen += 55;
+    // Definimos el nuevo texto de victoria
+    textoDeJuego = textoVictoria;
+    // Reproducimos el sonido de victoria
+    sonidoVictoria.play();
+    // Si el jugador que gano es el 1, ponemos su imagen
+    if (jugador == 1) {
+      // Se carga la nueva imagen
+      imagenTurno = loadImage("x.png");
+      // De lo contrio si gano el jugador 2, ponemos su imagen
+    } else {
+      // Cargamos su nueva imagen
+      imagenTurno = loadImage("o.png");
+    }
+  }
+}
+
+/**
+ * Este metodo se encarga de hacer la suma de puntuacion en el juego
+ * tomando como argumento el jugador.
+ * @param int jugador: jugador actual
+ */
+public void sumarMarcador(final int jugador) {
+  // Comprobamos quien es el jugador
+  if (jugador == 1) {
+    // Si el 1, sumamos 1 al jugador 1
+    puntajePrimerJugador++;
+  } else {
+    // Si es el 2, sumamos 1 al jugador 2
+    puntajeSegundoJugador++;
+  }
 }
