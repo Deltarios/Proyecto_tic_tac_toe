@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import processing.sound.*;
 
 private final String textoReinicio = "Reiniciar Partida";
 private String textoJugador = "Turno Jugador: ";
@@ -32,12 +33,15 @@ private PImage imagenJugadorActual;
 private color fondo;
 private color fondoReinicio;
 
-private int coordenadaFija = 340;
+private int coordenadaFijaImagen = 340;
+private int coordenadaFijaTexto = 220;
 
 private int x = 250;
 private int y = 220;
 private int x2 = 250;
 private int y2 = 480;
+
+private SoundFile clickBoton;
 
 void setup() {   
 
@@ -50,6 +54,8 @@ void setup() {
   fuente = loadFont("Beirut-20.vlw");
   fondo = #F8F8F8;
   fondoReinicio = #F8F8F8;
+
+  clickBoton = new SoundFile(this, "sonidoClick.mp3");
 }
 
 void draw() {
@@ -90,13 +96,16 @@ void draw() {
   fill(0);
   textFont(fuente);
   textSize(15);
-  text(textoJugador, 220, 125);
+  text(textoJugador, coordenadaFijaTexto, 125);
 
   if (imagenJugadorActual != null) {
     if (victoria == false) {
       imagenTurno = imagenJugadorActual(primerJugador, segundoJugador);
     }
-    image(imagenTurno, coordenadaFija, 110, 20, 20);
+    
+    if(numeroTurno != 9 || victoria == true) {
+    image(imagenTurno, coordenadaFijaImagen, 110, 20, 20);
+    }
   }
 
   fill(0, 189, 173);
@@ -106,6 +115,7 @@ void draw() {
 }
 
 void mousePressed() {
+  clickBoton.play();
   if (mouseX > 0 && mouseY >= 550) {
     fondoReinicio = #DCDCDC;
     accionReinicio();
@@ -119,6 +129,9 @@ void mousePressed() {
         if (victoria == true) {
           efectosVictoria(jugadorActual, victoria);
           sumarMarcador(jugadorActual);
+        } else if (numeroTurno == 9) {
+          coordenadaFijaTexto += 50;
+          textoJugador = "¡Empate!";
         }
       } else {
         jugando = false;
@@ -314,7 +327,7 @@ public void sumarMarcador(final int jugador) {
 
 private void efectosVictoria(final int jugador, final boolean victoria) {
   if (victoria == true) {
-    coordenadaFija += 55;
+    coordenadaFijaImagen += 55;
     textoJugador = textoVictoria;
     if (jugador == 1) {
       imagenTurno = loadImage("x.png");
