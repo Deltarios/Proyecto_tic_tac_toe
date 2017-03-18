@@ -30,7 +30,7 @@ private static final int Y2_FIJA = Y_FIJA + 260;
 // Guardamos la cadena texto que se pondra en pantalla, para el boton de reinicio.
 private final String textoReinicio = "Reiniciar Partida";
 // Guardamos la cadena que se pondra en la pantalla cuando el usario este jugando.
-private String textoJugador = "Turno Jugador: ";
+private String textoDeJuego = "Turno Jugador: ";
 // Guardamos la cadena que se pondra en la pantalla cuando un usuario gane.
 private String textoVictoria = "Ha ganado el jugador: ";
 
@@ -87,8 +87,8 @@ private color fondoBotonesCruz;
 private color fondoBotonesCirculo;
 
 // Estas  variables de coordenadas fijas nos serviran como una referencia para ir cambiando la posicion sin tantas complicaciones
-private int coordenadaFijaImagen = 340;
-private int coordenadaFijaTexto = 220;
+private int coordenadaVariableImagen = 340;
+private int coordenadaVariableTexto = 220;
 
 // En cada uno de estas variables seran necesaria para reservar un espacio de memoria para el sonido, durante las partidas.
 private SoundFile clickBoton;
@@ -152,12 +152,6 @@ void draw() {
   noFill();
   // Finaliza el dibujado del cuadro blanco superior 
 
-  // Estas lineas de codigo dibujan lo que sera el cuadro blanco inferior del juego donde esta el boton de reinicio
-  fill(fondoReinicio);
-  rect(0, 550, 600, 50);
-  noFill();
-  // Finaliza el dibujado del cuadro blanco inferior
-
   // Estas lineas de codigo se encargan de dibujar lo que sera el rectangulo del marcador del jugador 1
   fill(fondoBotonesCruz);
   rect(150, 50, 150, 40, 7);
@@ -186,41 +180,114 @@ void draw() {
   textFont(fuentePuntaje);
   textSize(22);
   text(String.valueOf(puntajeSegundoJugador), 435, 77);
-  // Finaliza el dibujado del marcador del jugador 1
+  // Finaliza el dibujado del marcador del jugador 2
 
+  // Estas lineas de codigo son las encargadas de dibujar el texto y las imagenes lo que sera el turno del juegador, si gana uno mostrara quien gano y si hay un empate igual.
   fill(0);
   textFont(fuente);
   textSize(15);
-  text(textoJugador, coordenadaFijaTexto, 125);
+  // Aqui recibimos el texto del juego actual, ya que este puede variar segun el estado actual del juego
+  // Ademas la coordenada al reducir o aumentar el texto cambia, y esto es para evitar ese error
+  text(textoDeJuego, coordenadaVariableTexto, 125);
+  // Finalizamos el dibujado del texto del estado del juego
 
+  // Primero comprobamos si hay alguna imagen en nuestra variable, si hay una imagen sera: true, de lo contrario sera: false.
+  // Esto para evitar error de objeto nulo.
   if (imagenJugadorActual != null) {
+    // Segundo comprobamos si comprobamos que no hay ningun ganador para intercambiar la imagen en cada turno, si hay una victoria sera: true, si aun nadie gana sera false
     if (victoria == false) {
+      // Le asignamos la imagen al turno para se visualize en pantalla debajo del texto del marcador
+      // Para saber que imagen es de cada jugador nos auxiliamos del metodo de imagenJugadorActual 
       imagenTurno = imagenJugadorActual(primerJugador, segundoJugador);
     }
 
+    // Una ultima comprobacion nos servira para no poner la imagen cuando sea el turno 9( hay un empate), pero igual si no hay una victoria en el turno 9
+    // Dado que el usuario podria ganar el ultimo movimiento que gana. Esto previene esa falla
     if (numeroTurno != 9 || victoria == true) {
-      image(imagenTurno, coordenadaFijaImagen, 110, 20, 20);
+      // Una vez que vimos que hay victoria y no hay empate procedemos ha poner la imagen 
+      image(imagenTurno, coordenadaVariableImagen, 110, 20, 20);
     }
   }
+  // Finalizamos el dibujado del texto y la imagen del estado del juego
 
+  // Estas lineas de codigo dibujan lo que sera el cuadro blanco inferior del juego donde esta el boton de reinicio
+  fill(fondoReinicio);
+  rect(0, 550, 600, 50);
+  noFill();
+  // Finaliza el dibujado del cuadro blanco inferior
+
+  // Estas lineas de codigo dibujan lo que es el texto de reinicio del boton del texto
   fill(0, 189, 173);
   textFont(fuente);
   text(textoReinicio, 215, 580);
   strokeWeight(10);
+  // Finaliza dibujado del texto del boton de reinicio.
 
+  // Este metodo nos servira que el usuario pueda elegir con que imagen quiere empezar.
   eleccionJugador();
 }
 
+/**
+ * Esta es el metodo encargado de definir todo lo que es el tablero
+ * con esta creamos cada una de las lineas que son utilizados para 
+ * el tabler, para que posteriomente se dibuje.
+ * @param x, y, x2, y2
+ */
 void tablero(final int x, final int y, final int x2, final int y2) {
+  // Definimos que queremos a las lineas cuadradas
   strokeCap(SQUARE);
+  // Definimos el color de las lineas
   stroke(0, 161, 147);
+  
+  // Creamos la primera linea y la segunda linea verticales del tablero, siendo la primera, nuestra referencia
   line(x, y, x2, y2);
   line(x + 90, y, x2 + 90, y2);
+  // Finalizamos con dibujar la primera y segunda linea vertical
 
+  // Creamos la primera linea y la segunda linea horizontales del tablero, estan usan de referencia a la primera linea
   line(x - 85, y + 85, x2 + 175, y2 - 175);
   line(x - 85, y + 175, x2 + 175, y2 - 85);
+  // Finalizamos con dibujar la primera y segunda linea vertical
 
+  // Dejamos de pintar los bordes de las lineas
   noStroke();
+}
+
+public PImage imagenJugadorActual(final boolean primerJugador, final boolean segundoJugador) {
+  PImage imagenTurno;
+  if (primerJugador == false && segundoJugador == true) {
+    imagenTurno = loadImage("o.png");
+  } else {
+    imagenTurno = loadImage("x.png");
+  }
+  return imagenTurno;
+}
+
+private void eleccionJugador() {
+  if (mouseX >= X_FIJA - 100  && mouseX <= X_FIJA + 50 && mouseY >= Y_FIJA - 170 && mouseY < Y2_FIJA - 390) {
+    if (numeroTurno == 0) {
+      fondoBotonesCruz = #DCDCDC;
+      if (mousePressed) {
+        jugadorActual = 1;
+        imagenJugadorActual = loadImage("x.png");
+        primerJugador = true;
+        segundoJugador = false;
+      }
+    }
+  } else if (mouseX >= X_FIJA + 60  && mouseX <= X_FIJA + 210 && mouseY >= Y_FIJA - 170 && mouseY < Y2_FIJA - 390) {
+    if (numeroTurno == 0) {
+      fondoBotonesCirculo = #DCDCDC;
+      if (mousePressed) {
+        jugadorActual = 2;
+        imagenJugadorActual = loadImage("o.png");
+        primerJugador = false;
+        segundoJugador = true;
+      }
+    }
+  } else {
+    fondoBotonesCruz = #FFFFFF;
+    fondoBotonesCirculo = #FFFFFF;
+  }
 }
 
 void mousePressed() {
@@ -235,14 +302,13 @@ void mousePressed() {
     if (numeroTurno < 9) {
       if (victoria == false) {
         funcionBotones();
-        println("El turno es: " + numeroTurno);
         if (victoria == true) {
           efectosVictoria(jugadorActual, victoria);
           sumarMarcador(jugadorActual);
         } else if (numeroTurno == 9) {
-          coordenadaFijaTexto += 50;
+          coordenadaVariableTexto += 50;
           sonidoEmpate.play();
-          textoJugador = "¡Empate!";
+          textoDeJuego = "¡Empate!";
         }
       } else {
         jugando = false;
@@ -267,16 +333,6 @@ private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) 
   }
   this.primerJugador = primerJugador;
   this.segundoJugador = segundoJugador;
-}
-
-private PImage imagenJugadorActual(final boolean primerJugador, final boolean segundoJugador) {
-  PImage imagenTurno;
-  if (primerJugador == false && segundoJugador == true) {
-    imagenTurno = loadImage("o.png");
-  } else {
-    imagenTurno = loadImage("x.png");
-  }
-  return imagenTurno;
 }
 
 private boolean comprobarVictoria(final int jugador) {
@@ -426,8 +482,8 @@ public void sumarMarcador(final int jugador) {
 
 private void efectosVictoria(final int jugador, final boolean victoria) {
   if (victoria == true) {
-    coordenadaFijaImagen += 55;
-    textoJugador = textoVictoria;
+    coordenadaVariableImagen += 55;
+    textoDeJuego = textoVictoria;
     sonidoVictoria.play();
     if (jugador == 1) {
       imagenTurno = loadImage("x.png");
@@ -447,34 +503,7 @@ private void accionReinicio() {
   primerJugador = true;
   segundoJugador = false;
   victoria = false;
-  coordenadaFijaImagen = 340;
-  coordenadaFijaTexto = 220;
-  textoJugador = "Turno Jugador: ";
-}
-
-private void eleccionJugador() {
-  if (mouseX >= X_FIJA - 100  && mouseX <= X_FIJA + 50 && mouseY >= Y_FIJA - 170 && mouseY < Y2_FIJA - 390) {
-    if (numeroTurno == 0) {
-      fondoBotonesCruz = #DCDCDC;
-      if (mousePressed) {
-        jugadorActual = 1;
-        imagenJugadorActual = loadImage("x.png");
-        primerJugador = true;
-        segundoJugador = false;
-      }
-    }
-  } else if (mouseX >= X_FIJA + 60  && mouseX <= X_FIJA + 210 && mouseY >= Y_FIJA - 170 && mouseY < Y2_FIJA - 390) {
-    if (numeroTurno == 0) {
-      fondoBotonesCirculo = #DCDCDC;
-      if (mousePressed) {
-        jugadorActual = 2;
-        imagenJugadorActual = loadImage("o.png");
-        primerJugador = false;
-        segundoJugador = true;
-      }
-    }
-  } else {
-    fondoBotonesCruz = #FFFFFF;
-    fondoBotonesCirculo = #FFFFFF;
-  }
+  coordenadaVariableImagen = 340;
+  coordenadaVariableTexto = 220;
+  textoDeJuego = "Turno Jugador: ";
 }
