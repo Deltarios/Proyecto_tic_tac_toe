@@ -11,9 +11,10 @@ La interfaz es basada al de google, esto es un proyecto de estilo educativo, par
 que se nos porpociona Java y Processing
 
 ### NOTA:
-    Es necesario descargar la liberia Sound al descargar y probar el código fuente
+
+¡Es necesario descargar la liberia Sound al descargar y probar el código fuente!
     
-    Herramientas -> Añadir Herramienta -> Libraries -> En filter buscar "Sound" del Autor: The Processing Foundation
+Herramientas -> Añadir Herramienta -> Libraries -> En filter buscar "Sound" del Autor: The Processing Foundation
 
 Programas:
 - Java
