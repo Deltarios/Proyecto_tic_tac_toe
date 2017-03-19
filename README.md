@@ -10,6 +10,11 @@ Programa creado con Processing y Java que es una simulacion del juego Tic Tac To
 La interfaz es basada al de google, esto es un proyecto de estilo educativo, para desarrollar los conocimientos y habilidades
 que se nos porpociona Java y Processing
 
+### NOTA:
+    Es necesario descargar la liberia Sound al descargar y probar el código fuente
+    
+    Herramientas -> Añadir Herramienta -> Libraries -> En filter buscar "Sound" del Autor: The Processing Foundation
+
 Programas:
 - Java
 - Processing 
@@ -21,6 +26,7 @@ Programas:
 <td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen1.png></td>
 <td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen2.png></td>
 <td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen3.png></td>
+<td><img src=https://github.com/Deltarios/Proyecto_tic_tac_toe/blob/master/raw/imagen4.png></td>
 </tr>
 </table>
 
