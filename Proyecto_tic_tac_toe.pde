@@ -16,6 +16,12 @@
  *
  */
 
+/**
+ * ¡NOTA!
+ * Es necesario descargar la libreria processing.sound.*; para este proyecto, buscar en
+ * Herramientas -> Añadir Herramienta -> Libraries -> En filter buscar Sound Author: The Processing Foundation
+ */
+ 
 // Este importe trae todos los codigos necesarios para hacer uso de sonidos en el
 // programa, sin esta importancion no podriamos hacer los sonidos de click, victoria y empate
 import processing.sound.*;
