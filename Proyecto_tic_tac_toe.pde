@@ -275,67 +275,122 @@ public PImage imagenJugadorActual(final boolean primerJugador, final boolean seg
   return imagenTurno;
 }
 
+/**
+ * Este metodo se encarga de seleccionar y configurar el juego cuando el usuario ya eligio con que simbolo quiere jugar
+ * entonces esto se encargara de hacer un boton seleccionable con efecto de sombreado, y configuracion de variables
+ * de cabezera, para que el juego inicie con el simbolo de preferencia del jugador
+ */
 private void eleccionJugador() {
+  // Este if limita un area de efecto del mouse, entonces cuendo estamos en esta area y solo en esta area, ocurrira lo que esta dentro de este if, esta area corresponde al rectangulo de la cruz
   if (mouseX >= X_FIJA - 100  && mouseX <= X_FIJA + 50 && mouseY >= Y_FIJA - 170 && mouseY < Y2_FIJA - 390) {
+    // Si el turno es igual a 0 entonces el usuario puede elegir quien va empezar, una vez que el turno sea diferente a 0 no podremos hacer nada. 
     if (numeroTurno == 0) {
+      // Sombreamos al boton para tener un mejor efecto visual, que es realmente solo cambiar el fondo del rectangulo a uno más oscuro.
       fondoBotonesCruz = #DCDCDC;
+      // Si presionamos el area en donde estamos y el turno es igual a 0 entonces, proceremos a configurar el juego a la eleccion del usuario
       if (mousePressed) {
+        //Asignamos la variable del jugador Actual a 1
         jugadorActual = 1;
+        // Asignamos la imagen del jugador de cruz
         imagenJugadorActual = loadImage("x.png");
+        // cambiamos los estados de cada uno de los jugadores
         primerJugador = true;
         segundoJugador = false;
       }
     }
+    // De lo contrario si estamos en la otra area del circulo este if limita un area de efecto del mouse, entonces cuendo estamos en esta area y solo en esta area, 
+    //ocurrira lo que esta dentro de este else if, esta area corresponde al rectangulo del circulo
   } else if (mouseX >= X_FIJA + 60  && mouseX <= X_FIJA + 210 && mouseY >= Y_FIJA - 170 && mouseY < Y2_FIJA - 390) {
+    // Si el turno es igual a 0 entonces el usuario puede elegir quien va empezar, una vez que el turno sea diferente a 0 no podremos hacer nada. 
     if (numeroTurno == 0) {
+      // Sombreamos al boton para tener un mejor efecto visual, que es realmente solo cambiar el fondo del rectangulo a uno más oscuro.
       fondoBotonesCirculo = #DCDCDC;
       if (mousePressed) {
+        //Asignamos la variable del jugador Actual a 2
         jugadorActual = 2;
+        // Asignamos la imagen del jugador del circulo
         imagenJugadorActual = loadImage("o.png");
+        // cambiamos los estados de cada uno de los jugadores
         primerJugador = false;
         segundoJugador = true;
       }
     }
   } else {
+    // Para que los cambios de los fondos no sean permanentes y solo sean cuando estemos en esa area de efecto, entonces actualizamos la variable apenas nos salimos de esa area
+    // regresando al color blanco de fondo de cada rectangulo
     fondoBotonesCruz = #FFFFFF;
     fondoBotonesCirculo = #FFFFFF;
   }
 }
 
+/**
+ * Aqui ocurren todos los eventos del mouse cuando este es presionado, aqui estan parte de la ensencia del juego
+ * dado que solo se ejecuta este codigo, cuando el mouse es presionado
+ */
 void mousePressed() {
+  // Reproducimos los sonidos del click cuando presionamos el mouse
   clickBoton.play();
 
+  // Boton de reinicio
+  // Creamos el area de efecto de mouse, donde solo se ejecutara este codigo, cuando se presione en esta area en especifico, esta es el area del boton de reinicio
   if (mouseX > 0 && mouseY >= 550) {
+    // Cambia el fondo del boton cuando presionamos en esta area
     fondoReinicio = #DCDCDC;
+    // Se reinicia el tablero del juego, para una siguiente ronda
     accionReinicio();
   }
 
+  /**
+   * Si estamos jugando, o sea hay una partida vigente esto ocurre, cuando aun no hay ganador, o los numeros de turnos son menores de 9
+   * entonces estamos jugando, ejecutaremos y activaremos todas la funcionalidades del juego, por que despues de 9 turnos o hay un ganador
+   * las funciones son bloqueadas y solo reinciando el tablero, podremos volver a jugar
+   */
   if (jugando) {
+    // Comprobamos si el turno es menor de 9, entonces ejecutaremos el codigo dentro del if, esto para posteriormente determinar si hay un empate
     if (numeroTurno < 9) {
+      // Comprobamos que aun no hay una victoria, la victoria puede ser en cualquier turno, y por eso esta dentro del anterior if
       if (victoria == false) {
+        // Activamos las funciones del tablero, si aun no hay un ganador
         funcionBotones();
+        // Despues verificamos una vez más si hay un ganador, si los hay, ejecutaremos el if
         if (victoria == true) {
+          // activaremos los efectos de la victoria, dando como argumentos, al jugador ganador, y si este a ganado
           efectosVictoria(jugadorActual, victoria);
+          // sumaremos a su marcador +1 despues de los efectos de victoria
           sumarMarcador(jugadorActual);
+          // de lo contrario si llegamos a el turno 9 entonces y no hay un ganador entonces hay un empate
         } else if (numeroTurno == 9) {
+          // Cambiamos las coordenadas del texto variable, para que quede centrado, aqui ya no se coloca una imagen, debido a que no hay un ganador
           coordenadaVariableTexto += 50;
+          // Se reproduce el sonido del empate
           sonidoEmpate.play();
+          // Se establece un nuevo texto en el juego, donde nos muestra el empate de los jugadores
           textoDeJuego = "¡Empate!";
         }
-      } else {
-        jugando = false;
       }
     }
   }
 }
 
+/**
+ * Encargado de la creacion y el funcionamiento de cada uno de los botones en el tablero, esta es posible limitando un area de efecto, donde 
+ * encada area tendremos diferentes acciones, haciendo posible la creacion del tablero interactivo del Tic Tac Toe
+ */
 private void funcionBotones() {
   //Cuadro 1
+  // Hacemos un limite del area, tomando a la equis fija como referencia, para posibles cambios de la posicion del tabler, y esto no sea vean afectados
+  // todo lo que ocurra en este if sera solo en este if *La idea es la misma en cada cuadro*
   if (mouseX > X_FIJA - 80 && mouseX <= X_FIJA - 5 && mouseY >= Y_FIJA && mouseY < Y2_FIJA - 180) {
+    // Verificamos si la casilla en donde queremos presionar esta ocupada o no haciendo un llamado a nuestro metodo, casillaOcupada(i) siendo i 
+    // el numero de la casilla, si no esta ocupada, ejecutamos el codigo
     if (!casillaOcupada(1)) {
+      // verificamos el estado del jugador, para tener la imagen del jugador en ese momento
       estadoJugadorActual(primerJugador, segundoJugador);
+      // colocamos la imagen del jugador actual, en las coordenadas del cuadro
       image(imagenJugadorActual, X_FIJA - 75, Y_FIJA + 10, 60, 60);
+      // rellenamos nuestra matriz, dando los valores que fuimos recibiendo. en este caso 1 es la casilla, el otro uno es si esta ocupado osea 1, y la ultima el jugador
       asignarCasilla(1, 1, jugadorActual);
+      // comprobamos, si el jugador ha gando en ese movimiento 
       victoria = comprobarVictoria(jugadorActual);
     }
   }
@@ -421,27 +476,59 @@ private void funcionBotones() {
   }
 }
 
+/**
+ * Este metodo seria el encargado de verificar si la casilla esta siendo ocupada o no, recordando que el index de casillas[1][i] 1 es donde vamos los datos de ocupado o desocupado
+ * i es el numero del cuadro, podemos verificar si ese cuadro esta ocupado o no, partiendo como referencia un cuadro que le daremos para revisar siendo 1 ocupado y 0 desocupado
+ * @param int cuadro
+ * cuadro que queremos revisar si se encuentra ocupado o no.
+ * @return boolean true or false dependiendo de la comprobacion interna del metodo.
+ */
 public boolean casillaOcupada(final int cuadro) {
+  // Aqui verificamos si la casilla tiene guardado un 1, si lo tiene entonces devolvera true, significando que esa casilla esta ocupada
   if (casillas[1][cuadro - 1] == 1) {
+    // devuelve true si el valor es 1, entonces esta ocupado
     return true;
   }
+  // Si obtenemos otro valor, entonces esta desocupada, entonces nuestro metodo devuelve false
   return false;
 }
 
+/**
+ * Se encarga de ver el estado del jugador y hacer que los turnos cambien, jugada tras jugada, entonce este sirve, los valores de los jugadores
+ * y ve quien esta disponible y quien no, despues le asigna sus determinados valores a cada uno de ellos, cuando termina, aumenta el turno en 1
+ * @param boolean primerJugador, boolean segundoJugador
+ * estos son los estados de cada uno de los juegdores
+ */
 private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) {
+  // Si el jugador 1 es verdadero, pero el jugador 2 es falso, entonces es turno del jugador 1, entonces ejecutamos el codigo dentro del if
   if (primerJugador == true && segundoJugador == false) {
+    // Le asignamos la imagen que usara en el tablero
     imagenJugadorActual = loadImage("x.png");
+    // cambiamos los estados para el siguiente turno del jugador uno, ahora este sera false
     primerJugador = false;
+    // cambiamos los estados para el siguiente turno del jugador uno, ahora este sera true
     segundoJugador = true;
+    // El jugador en turno sera el 1, para rellenar a la matriz sera usado
     jugadorActual = 1;
+    // aumentamos el turno +1 al finalizar
     numeroTurno++;
+    // De lo contrario debido a que solo tenemos dos posilidades debido a que solo hay dos jugadores entonces si es 1 entonces 2 y si es 2 es 1, 
+    // entonces si no es el turno del primero sera del segundo
   } else {
+    // ponemos la imagen del segundo jugador
     imagenJugadorActual = loadImage("o.png");
+    // cambiamos los estados para el siguiente turno del jugador uno, ahora este sera true
     primerJugador = true;
+    // cambiamos los estados para el siguiente turno del jugador uno, ahora este sera false
     segundoJugador = false;
+    // El jugador en turno sera el 2, para rellenar a la matriz sera usado
     jugadorActual = 2;
+    // aumentamos el turno +1 al finalizar
     numeroTurno++;
   }
+
+  // Despues de las comprobaciones, lo ultimos que haremos es actualizar nuestras variables globales, dandole los valores obtenidos de nuestras variables locas, 
+  // para que la transicion de turnos sea posible
   this.primerJugador = primerJugador;
   this.segundoJugador = segundoJugador;
 }
@@ -455,18 +542,19 @@ private void estadoJugadorActual(boolean primerJugador, boolean segundoJugador) 
  */
 public void asignarCasilla(final int cuadro, final int ocupado, final int jugadorActual) {
   // Le asignamos el numero de cuadro [0 a 8], pero lo que recibimos le tenemos que restar 1 para no salir del index: por ejemplo si recibmos 1 le restamos 1 seria realmente
-  // la posicion 0 del arreglo
+  // la posicion 0 del arreglo por ejemplo estamos en cuadro 3  y el jugador 2 pone en la casilla, esa matriz quedaria aqui llenariamos que cuandro es: {[3,0,0]}   
   casillas[0][cuadro - 1] = cuadro;
-  // Le asignamos el estado de ocupado o desocupado, siendo 0 desocupado y 1 ocupado, los unicos valores posibles que puede tomar
+  // Le asignamos el estado de ocupado o desocupado, siendo 0 desocupado y 1 ocupado, los unicos valores posibles que puede tomar siguien el ejemplo aqui si lo marcariamos como ocupado: {[3,1,0]} 
   casillas[1][cuadro - 1] = ocupado;
   // Le asignamos que jugador esta en esa casilla, es una manera de saber quien esta en la casilla, marcando con 1 si es el jugador 1 y un 2 si es el jugador 2
+  // siguien con el mismo ejemplo aqui llenariamos que jugador fue quien lo lleno entonces quedaria finalmente: {[3,1,2]}
   casillas[2][cuadro - 1] = jugadorActual;
 }
 
 /**
  * Teniendo en cuenta nuestra matriz 9x3 un ejemplo para ilustrar es: {[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]}
  * Este metodo hace la comprobacion de la victoria, tomando como punto de referencia al jugador actual, revisa si este ha ganado al finalizar su turno
- * verificamos de forma vertigal, horizotal, y diagonal cada uno de las posiciones, y si encuentra que el jugador al momento de terminar su turno
+ * verificamos de forma vertical, horizotal, y diagonal cada uno de las posiciones, y si encuentra que el jugador al momento de terminar su turno
  * si hay una combiacion en la matriz en index(posicion) [2][i] siendo 2 las posiciones de los jugadores y i el numero del cuadro que se revisa
  * de [{1, 1, 1}] (Siendo el caso del jugador 1), si hay una combinacion asi al finalizar su turno significa que ha ganado, y devolvemos
  * true, de lo contrario si el jugador aun no completa una linea de tres, devolvera false, dando entender que aun no ha ganado el jugador en ese turno
