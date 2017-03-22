@@ -10,10 +10,10 @@
  * Aqui se encuentra toda la logica del programa
  ******************************************************** 
  *
- * @version 1.0
+ * @version 1.1
+ * Se agrego seleccion de fondo
  *
  * @see <a href = "https://github.com/Deltarios/Proyecto_tic_tac_toe" /> GitHub – Repositori del Tic Tac Toe </a>
- *
  */
 
 /**
@@ -21,7 +21,7 @@
  * Es necesario descargar la libreria processing.sound.*; para este proyecto, buscar en
  * Herramientas -> Añadir Herramienta -> Libraries -> En filter buscar Sound Author: The Processing Foundation
  */
- 
+
 // Este importe trae todos los codigos necesarios para hacer uso de sonidos en el
 // programa, sin esta importancion no podriamos hacer los sonidos de click, victoria y empate
 import processing.sound.*;
@@ -84,6 +84,15 @@ private PImage imagenTurno;
 // Reservaremos un espacio de memoria para la variable de la imagen en el tablero, esta sirve para llenar el tablero con imagenes cuando se hace clic en la casilla
 private PImage imagenJugadorActual;
 
+private PImage imagenMenu;
+private boolean cuadroVisible = false;
+
+private boolean clickCuadroVerde = false;
+
+private color fondoJuego  = #00BDAD;
+
+private color colorTablero = #00A193;
+
 // Reservamos un espacio para el color fondo de la pantalla
 private color fondo;
 // Reservamos un espacio para el color fondo del boton de reinicio
@@ -110,8 +119,6 @@ void setup() {
 
   // Definimos la pantalla y su tamaño.
   size(600, 600);
-  // Defnimos el color del fondo al juego. 
-  background(0, 189, 173);
 
   // Definimos el valor de la imagen del jugador uno, y cargamos la imagen.
   simboloCruz = loadImage("x.png");
@@ -143,6 +150,11 @@ void setup() {
  * todos los elementos se van ha actualizar para crear y hacer el juego. * Recordar que es un ciclo que se repite infinitas veces*
  */
 void draw() {
+
+  if (numeroTurno == 0) {
+    // Defnimos el color del fondo al juego. 
+    background(fondoJuego);
+  }
 
   // Metodo encargado de hacer el tablero del juego con ella se dibujara, el Tic Tac Toe
   // Acepta los valores constantes que definimos en la cabecera del programa.
@@ -223,7 +235,7 @@ void draw() {
   // Finaliza el dibujado del cuadro blanco inferior
 
   // Estas lineas de codigo dibujan lo que es el texto de reinicio del boton del texto
-  fill(0, 189, 173);
+  fill(fondoJuego);
   textFont(fuente);
   text(textoReinicio, 215, 580);
   strokeWeight(10);
@@ -231,6 +243,10 @@ void draw() {
 
   // Este metodo nos servira que el usuario pueda elegir con que imagen quiere empezar.
   eleccionJugador();
+
+  if (numeroTurno == 0) {
+    menuDespegable();
+  }
 }
 
 /**
@@ -243,7 +259,7 @@ void tablero(final int x, final int y, final int x2, final int y2) {
   // Definimos que queremos a las lineas cuadradas
   strokeCap(SQUARE);
   // Definimos el color de las lineas
-  stroke(0, 161, 147);
+  stroke(colorTablero);
 
   // Creamos la primera linea y la segunda linea verticales del tablero, siendo la primera, nuestra referencia
   line(x, y, x2, y2); // 1 Linea, la x, y, x2 y y2 son sus coordenadas
@@ -336,6 +352,9 @@ private void eleccionJugador() {
 void mousePressed() {
   // Reproducimos los sonidos del click cuando presionamos el mouse
   clickBoton.play();
+
+  cuadroVisible = false;
+  clickCuadroVerde = false;
 
   // Boton de reinicio
   // Creamos el area de efecto de mouse, donde solo se ejecutara este codigo, cuando se presione en esta area en especifico, esta es el area del boton de reinicio
@@ -630,7 +649,7 @@ private void accionReinicio() {
   // Limpia la pantalla y despues se van ha redibujar (Recuerda que el void Draw se repite indefinidamente)
   clear();
   // Se regresan los valores originales al iniciar el juego
-  background(0, 189, 173);
+  background(fondoJuego);
   // Esto crea una nueva matriz de 9x3 o sea {[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]} la nuevas matrices siempre se rellena por defecto con ceros
   casillas = new int[3][9];
   numeroTurno = 0;
@@ -685,5 +704,59 @@ public void sumarMarcador(final int jugador) {
   } else {
     // Si es el 2, sumamos 1 al jugador 2
     puntajeSegundoJugador++;
+  }
+}
+
+public void menuDespegable() {
+  fill(#FFFFFF);
+  rect(20, 0, 120, 40, 0, 0, 7, 7);
+  noFill();
+
+  fill(0);
+  textFont(fuentePuntaje);
+  textSize(20);
+  text("Fondo", 30, 30);
+  noFill();
+
+  if (imagenMenu != null) {
+    image(imagenMenu, 110, 10, 20, 20);
+  }
+
+  if (mouseX >= 20 && mouseX <= 140 && mouseY >= 0 && mouseY <= 40) {
+    cuadroVisible = true;
+  } else {
+    imagenMenu = loadImage("flecha_menu.png");
+  }
+  if (cuadroVisible) {
+    imagenMenu = null;
+
+    fill(#00BDAD);
+    rect(20, 40, 120, 20);
+    noFill();
+
+    fill(#40EDFF);
+    rect(20, 60, 120, 20);
+    noFill();
+
+    fill(#DE2853);
+    rect(20, 80, 120, 20);
+    noFill();
+
+    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 40 && mouseY <= 60) {
+      println("Punto X: " + mouseX + " Punto Y: " + mouseY + " Cuadro fondo 1");
+      fondoJuego  = #00BDAD;
+      colorTablero = #00A193;
+    }
+
+    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 60 && mouseY <= 80) {
+      println("Punto X: " + mouseX + " Punto Y: " + mouseY + " Cuadro fondo 2");
+      fondoJuego = #40EDFF;
+      colorTablero = #00C5FF;
+    }
+
+    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 80 && mouseY <= 100) {
+      fondoJuego = #DE2853;
+      colorTablero = #B41B42;
+    }
   }
 }
