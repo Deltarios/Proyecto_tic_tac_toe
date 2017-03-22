@@ -87,8 +87,6 @@ private PImage imagenJugadorActual;
 private PImage imagenMenu;
 private boolean cuadroVisible = false;
 
-private boolean clickCuadroVerde = false;
-
 private color fondoJuego  = #00BDAD;
 
 private color colorTablero = #00A193;
@@ -244,7 +242,9 @@ void draw() {
   // Este metodo nos servira que el usuario pueda elegir con que imagen quiere empezar.
   eleccionJugador();
 
+  // El menu despegable solo se mostrara cuando el turno sea 0, cuando sea diferente desaparecera 
   if (numeroTurno == 0) {
+    // metodo del menu despegable
     menuDespegable();
   }
 }
@@ -346,6 +346,79 @@ private void eleccionJugador() {
 }
 
 /**
+ * Metodo encargado del dibujado del menu despegable en pantalla
+ */
+public void menuDespegable() {
+  // Hacemos el cuadro seleccionable
+  fill(#FFFFFF);
+  rect(20, 0, 120, 40, 0, 0, 7, 7);
+  noFill();
+
+  // Hacemos el texto del cuadro 
+  fill(0);
+  textFont(fuentePuntaje);
+  textSize(20);
+  text("Fondo", 30, 30);
+  noFill();
+
+  // Antes de poner la imagenes revisamos si esta no esta vacia
+  if (imagenMenu != null) {
+    // Establecemos la imagen en pantalla si no esta vacio
+    image(imagenMenu, 110, 10, 20, 20);
+  }
+
+  // Desplega el menu si nuestro mouse se encuentra en esta area
+  if (mouseX >= 20 && mouseX <= 140 && mouseY >= 0 && mouseY <= 40) {
+    // Declaramos al cuadro como visible
+    cuadroVisible = true;
+  } else {
+    // Si no estamos en esa area, dibujamos la imagen del la fecha del menu 
+    imagenMenu = loadImage("flecha_menu.png");
+  }
+
+  // Si el cuadro es visible, desplegamos los demas rectangulos que conforman el menu
+  if (cuadroVisible) {
+    // Vaciamos la imagen, para que no se dibuje
+    imagenMenu = null;
+
+    // Dibujamos los diferentes rectangulos, para hace una paleta de seleccion
+    // Cuadro 1
+    fill(#00BDAD);
+    rect(20, 40, 120, 30);
+    noFill();
+
+    // Cuadro 2
+    fill(#40EDFF);
+    rect(20, 70, 120, 30);
+    noFill();
+
+    // Cuadro 3
+    fill(#FCEEA5);
+    rect(20, 100, 120, 30);
+    noFill();
+    // Terminamos de dibujar los rectangulos
+
+    // Area de eventos del cuadrado 1, aqui cambiamos los colores del juego
+    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 40 && mouseY <= 70) {
+      fondoJuego  = #00BDAD;
+      colorTablero = #00A193;
+    }
+
+    // Area de eventos del cuadrado 2, aqui cambiamos los colores del juego
+    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 70 && mouseY <= 100) {
+      fondoJuego = #40EDFF;
+      colorTablero = #00C5FF;
+    }
+
+    // Area de eventos del cuadrado 3, aqui cambiamos los colores del juego
+    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 100 && mouseY <= 130) {
+      fondoJuego = #FCEEA5;
+      colorTablero = #D8C355;
+    }
+  }
+}
+
+/**
  * Aqui ocurren todos los eventos del mouse cuando este es presionado, aqui estan parte de la ensencia del juego
  * dado que solo se ejecuta este codigo, cuando el mouse es presionado
  */
@@ -354,7 +427,6 @@ void mousePressed() {
   clickBoton.play();
 
   cuadroVisible = false;
-  clickCuadroVerde = false;
 
   // Boton de reinicio
   // Creamos el area de efecto de mouse, donde solo se ejecutara este codigo, cuando se presione en esta area en especifico, esta es el area del boton de reinicio
@@ -704,59 +776,5 @@ public void sumarMarcador(final int jugador) {
   } else {
     // Si es el 2, sumamos 1 al jugador 2
     puntajeSegundoJugador++;
-  }
-}
-
-public void menuDespegable() {
-  fill(#FFFFFF);
-  rect(20, 0, 120, 40, 0, 0, 7, 7);
-  noFill();
-
-  fill(0);
-  textFont(fuentePuntaje);
-  textSize(20);
-  text("Fondo", 30, 30);
-  noFill();
-
-  if (imagenMenu != null) {
-    image(imagenMenu, 110, 10, 20, 20);
-  }
-
-  if (mouseX >= 20 && mouseX <= 140 && mouseY >= 0 && mouseY <= 40) {
-    cuadroVisible = true;
-  } else {
-    imagenMenu = loadImage("flecha_menu.png");
-  }
-  if (cuadroVisible) {
-    imagenMenu = null;
-
-    fill(#00BDAD);
-    rect(20, 40, 120, 20);
-    noFill();
-
-    fill(#40EDFF);
-    rect(20, 60, 120, 20);
-    noFill();
-
-    fill(#DE2853);
-    rect(20, 80, 120, 20);
-    noFill();
-
-    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 40 && mouseY <= 60) {
-      println("Punto X: " + mouseX + " Punto Y: " + mouseY + " Cuadro fondo 1");
-      fondoJuego  = #00BDAD;
-      colorTablero = #00A193;
-    }
-
-    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 60 && mouseY <= 80) {
-      println("Punto X: " + mouseX + " Punto Y: " + mouseY + " Cuadro fondo 2");
-      fondoJuego = #40EDFF;
-      colorTablero = #00C5FF;
-    }
-
-    if (mouseX >= 20 && mouseX <= 140 && mouseY >= 80 && mouseY <= 100) {
-      fondoJuego = #DE2853;
-      colorTablero = #B41B42;
-    }
   }
 }
